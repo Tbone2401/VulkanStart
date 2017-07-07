@@ -1,0 +1,6 @@
+﻿  main.cpp
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(77): error C2371: 'extensions': redefinition; different basic types
+  d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(54): note: see declaration of 'extensions'
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(78): error C2660: 'vkEnumerateInstanceExtensionProperties': function does not take 2 arguments
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(84): error C2228: left of '.extensionName' must have class/struct/union
+  d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(84): note: type is 'const char *const '
