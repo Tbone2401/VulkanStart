@@ -1,5 +1,6 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW\glfw3.h>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <stdexcept>
 #include <functional>
@@ -9,6 +10,7 @@
 #include <cstring>
 #include <map>
 #include <set>
+#include <array>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -33,6 +35,40 @@ struct QueueFamilyIndices
 		return graphicsFamily >= 0 && presentFamily >= 0;
 	}
 };
+
+struct Vertex
+{
+	glm::vec2 pos;
+	glm::vec3 color;
+
+	static VkVertexInputBindingDescription getBindingDescription()
+	{
+		VkVertexInputBindingDescription bindingDescription = {};
+		bindingDescription.binding = 0;
+		bindingDescription.stride = sizeof(Vertex);
+		bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+		return bindingDescription;
+	}
+
+	static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions() 
+	{
+		std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions = {};
+
+		attributeDescriptions[0].binding = 0;
+		attributeDescriptions[0].location = 0;
+		attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+		attributeDescriptions[0].offset = offsetof(Vertex, pos);
+
+		attributeDescriptions[1].binding = 0;
+		attributeDescriptions[1].location = 1;
+		attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+		attributeDescriptions[1].offset = offsetof(Vertex, color);
+
+		return attributeDescriptions;
+	}
+};
+
+
 
 static std::vector<char> readFile(const std::string& filename)
 {
@@ -83,6 +119,13 @@ void DestroyDebugReportCallbackEXT(VkInstance instance,
 	}
 }
 
+const std::vector<Vertex> g_Vertices =
+{
+	{ { 0.0f, -0.5f },{ 1.0f, 1.0f, 1.0f } },
+	{ { 0.5f, 0.5f },{ 0.0f, 1.0f, 0.0f } },
+	{ { -0.5f, 0.5f },{ 0.0f, 0.0f, 1.0f } }
+};
+
 
 class HelloTriangleApplication {
 public:
@@ -113,9 +156,66 @@ private:
 		createGraphicsPipeline();
 		createFramebuffers();
 		createCommandPool();
+		createVertexBuffers();
 		createCommandBuffers();
 		createSemaphores();
 	}
+
+	void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
+	{
+		VkBufferCreateInfo bufferInfo = {};
+		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+		bufferInfo.size = size;
+		bufferInfo.usage = usage;
+		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+		if (vkCreateBuffer(m_Device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
+		{
+			throw std::runtime_error("failed to create buffer!");
+		}
+
+		VkMemoryRequirements memRequirements;
+		vkGetBufferMemoryRequirements(m_Device, buffer, &memRequirements);
+
+		VkMemoryAllocateInfo allocInfo = {};
+		allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+		allocInfo.allocationSize = memRequirements.size;
+		allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+
+		if (vkAllocateMemory(m_Device, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS)
+		{
+			throw std::runtime_error("failed to allocate vertex buffer memory!");
+		}
+
+		vkBindBufferMemory(m_Device, buffer, bufferMemory, 0);
+	}
+
+	void createVertexBuffers()
+	{
+		VkDeviceSize bufferSize = sizeof(g_Vertices[0]) * g_Vertices.size();
+		createBuffer(bufferSize, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, m_VertexBuffer, m_VertexBufferMemory);
+
+		void* data;
+		vkMapMemory(m_Device, m_VertexBufferMemory, 0, bufferSize, 0, &data);
+		memcpy(data, g_Vertices.data(), (size_t)bufferSize);
+		vkUnmapMemory(m_Device, m_VertexBufferMemory);
+	}
+
+	uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+	{
+		VkPhysicalDeviceMemoryProperties memProperties;
+		vkGetPhysicalDeviceMemoryProperties(m_PhysicalDevice, &memProperties);
+		
+		for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
+		{
+			if (typeFilter & (1 << i) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
+			{
+				return i;
+			}
+		}
+		throw std::runtime_error("failed to find suitable memory type!");
+	}
+
 	void createSemaphores()
 	{
 		VkSemaphoreCreateInfo semaphoreInfo = {};
@@ -132,6 +232,7 @@ private:
 	void createCommandBuffers()
 	{
 		m_CommandBuffers.resize(m_SwapChainFramebuffers.size());
+		
 		VkCommandBufferAllocateInfo allocInfo = {};
 		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 		allocInfo.commandPool = m_CommandPool;
@@ -167,7 +268,12 @@ private:
 			vkCmdBeginRenderPass(m_CommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 			vkCmdBindPipeline(m_CommandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_GraphicsPipeline);
-			vkCmdDraw(m_CommandBuffers[i], 3, 1, 0, 0);
+
+			VkBuffer vertexBuffers[] = { m_VertexBuffer };
+			VkDeviceSize offsets[] = { 0 };
+			vkCmdBindVertexBuffers(m_CommandBuffers[i], 0, 1, vertexBuffers, offsets);
+
+			vkCmdDraw(m_CommandBuffers[i], static_cast<uint32_t>(g_Vertices.size()), 1, 0, 0);
 
 			vkCmdEndRenderPass(m_CommandBuffers[i]);
 
@@ -303,12 +409,16 @@ private:
 
 		VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
 
+		auto bindingDescription = Vertex::getBindingDescription();
+		auto attributeDescriptions = Vertex::getAttributeDescriptions();
+
+
 		VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 		vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		vertexInputInfo.vertexBindingDescriptionCount = 0;
-		vertexInputInfo.pVertexBindingDescriptions = nullptr;
-		vertexInputInfo.vertexAttributeDescriptionCount = 0;
-		vertexInputInfo.pVertexAttributeDescriptions = nullptr;
+		vertexInputInfo.vertexBindingDescriptionCount = 1;
+		vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+		vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+		vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
 
 		VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
 		inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -951,29 +1061,41 @@ private:
 		vkDeviceWaitIdle(m_Device);
 	}
 
-	void cleanup()
-	{
-		vkDestroyCommandPool(m_Device, m_CommandPool, nullptr);
-		vkDestroyPipeline(m_Device, m_GraphicsPipeline, nullptr);
-		vkDestroyPipelineLayout(m_Device, m_PipelineLayout, nullptr);
-		vkDestroyRenderPass(m_Device, m_RenderPass, nullptr);
-		vkDestroyPipelineLayout(m_Device, m_PipelineLayout, nullptr);
-		for (size_t i = 0; i < m_SwapChainFramebuffers.size(); i++) 
-		{
+	void cleanupSwapChain() {
+		for (size_t i = 0; i < m_SwapChainFramebuffers.size(); i++) {
 			vkDestroyFramebuffer(m_Device, m_SwapChainFramebuffers[i], nullptr);
 		}
 
-		for (size_t i = 0; i < m_SwapChainImageViews.size(); i++)
-		{
+		vkFreeCommandBuffers(m_Device, m_CommandPool, static_cast<uint32_t>(m_CommandBuffers.size()), m_CommandBuffers.data());
+
+		vkDestroyPipeline(m_Device, m_GraphicsPipeline, nullptr);
+		vkDestroyPipelineLayout(m_Device, m_PipelineLayout, nullptr);
+		vkDestroyRenderPass(m_Device, m_RenderPass, nullptr);
+
+		for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) {
 			vkDestroyImageView(m_Device, m_SwapChainImageViews[i], nullptr);
 		}
+
 		vkDestroySwapchainKHR(m_Device, m_SwapChain, nullptr);
+	}
+
+	void cleanup()
+	{
+		cleanupSwapChain();
+
+		vkDestroyBuffer(m_Device, m_VertexBuffer, nullptr);
+		vkFreeMemory(m_Device, m_VertexBufferMemory, nullptr);
+
+		vkDestroySemaphore(m_Device, m_RenderFinishedSemaphore, nullptr);
+		vkDestroySemaphore(m_Device, m_ImageAvailableSemaphore, nullptr);
+
+		vkDestroyCommandPool(m_Device, m_CommandPool, nullptr);
+
+		vkDestroyDevice(m_Device, nullptr);
 		DestroyDebugReportCallbackEXT(m_Instance, m_Callback, nullptr);
 		vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
 		vkDestroyInstance(m_Instance, nullptr);
-		vkDestroyDevice(m_Device, nullptr);
-		vkDestroySemaphore(m_Device, m_RenderFinishedSemaphore, nullptr);
-		vkDestroySemaphore(m_Device, m_ImageAvailableSemaphore, nullptr);
+
 		glfwDestroyWindow(m_pWindow);
 
 		glfwTerminate();
@@ -1017,6 +1139,8 @@ private:
 	std::vector<VkCommandBuffer> m_CommandBuffers;
 	VkSemaphore m_ImageAvailableSemaphore;
 	VkSemaphore m_RenderFinishedSemaphore;
+	VkBuffer m_VertexBuffer;
+	VkDeviceMemory m_VertexBufferMemory;
 };
 
 int main() {
