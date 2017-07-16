@@ -1,4 +1,22 @@
 ﻿  main.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec3.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec3.hpp(227): note: see reference to class template instantiation 'glm::tvec3<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec3.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec3.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec4.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec4.hpp(272): note: see reference to class template instantiation 'glm::tvec4<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec4.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail\type_vec4.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1313): warning C4100: 'userData': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1311): warning C4100: 'layerPrefix': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1310): warning C4100: 'code': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1309): warning C4100: 'location': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1308): warning C4100: 'obj': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1307): warning C4100: 'objType': unreferenced formal parameter
+d:\documents - data\github\vulkanstart\vulkanstart\vulkantriangle\main.cpp(1306): warning C4100: 'flags': unreferenced formal parameter
   VulkanTriangle.vcxproj -> D:\Documents - Data\GitHub\VulkanStart\VulkanStart\x64\Debug\VulkanTriangle.exe
   VulkanTriangle.vcxproj -> D:\Documents - Data\GitHub\VulkanStart\VulkanStart\x64\Debug\VulkanTriangle.pdb (Partial PDB)
