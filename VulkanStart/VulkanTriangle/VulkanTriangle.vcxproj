@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;D:\Libraries\stb;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;D:\Libraries\stb;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;D:\Libraries\stb;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Libraries\1.0.51.0\Include;D:\Libraries\glm-0.9.8.4\glm;D:\Libraries\glfw-3.2.1.bin.WIN64\include;D:\Libraries\stb;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
