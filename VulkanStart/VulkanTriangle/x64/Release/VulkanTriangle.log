@@ -1,0 +1,35 @@
+﻿  main.cpp
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec3.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec3.hpp(227): note: see reference to class template instantiation 'glm::tvec3<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec3.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec3.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec4.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec4.hpp(272): note: see reference to class template instantiation 'glm::tvec4<T,P>' being compiled
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec4.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\detail/type_vec4.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+d:\libraries\glm-0.9.8.4\glm\glm\gtx\../gtc/quaternion.hpp(56): warning C4201: nonstandard extension used: nameless struct/union
+  d:\libraries\glm-0.9.8.4\glm\glm\gtx\../gtc/quaternion.hpp(132): note: see reference to class template instantiation 'glm::tquat<T,P>' being compiled
+D:\Libraries\stb\stb_image.h(2809): warning C4244: '=': conversion from 'int' to 'stbi__uint16', possible loss of data
+D:\Libraries\stb\stb_image.h(3614): warning C4456: declaration of 'k' hides previous local declaration
+  D:\Libraries\stb\stb_image.h(3547): note: see declaration of 'k'
+D:\Libraries\stb\stb_image.h(3624): warning C4456: declaration of 'k' hides previous local declaration
+  D:\Libraries\stb\stb_image.h(3547): note: see declaration of 'k'
+D:\Libraries\stb\stb_image.h(3652): warning C4456: declaration of 'k' hides previous local declaration
+  D:\Libraries\stb\stb_image.h(3547): note: see declaration of 'k'
+main.cpp(1811): warning C4100: 'userData': unreferenced formal parameter
+main.cpp(1809): warning C4100: 'layerPrefix': unreferenced formal parameter
+main.cpp(1808): warning C4100: 'code': unreferenced formal parameter
+main.cpp(1807): warning C4100: 'location': unreferenced formal parameter
+main.cpp(1806): warning C4100: 'obj': unreferenced formal parameter
+main.cpp(1805): warning C4100: 'objType': unreferenced formal parameter
+main.cpp(1804): warning C4100: 'flags': unreferenced formal parameter
+  Generating code
+  322 of 3403 functions ( 9.5%) were compiled, the rest were copied from previous compilation.
+    290 functions were new in current compilation
+    187 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  VulkanTriangle.vcxproj -> D:\Documents - Data\GitHub\VulkanStart\VulkanStart\x64\Release\VulkanTriangle.exe
